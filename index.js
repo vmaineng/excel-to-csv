@@ -50,7 +50,7 @@ const options = program.opts();
       if (nameIndex === -1 || amountIndex === -1) {
         throw new Error("Could not find 'name' or 'amount' columns in header.");
       }
-      csvContent += "name,amount\n";
+      csvContent += `"name,amount"\r\n`;
 
       for (let i = 1; i < data.length; i++) {
         const row = data[i];
@@ -59,7 +59,7 @@ const options = program.opts();
         }
       }
     } else {
-      csvContent += "name,amount\n";
+      csvContent += `"name,amount"\r\n`;
       for (const row of data) {
         if (row[0] !== undefined && row[1] !== undefined) {
           csvContent += `${row[0]},${row[1]}\n`;

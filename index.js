@@ -6,20 +6,28 @@ import path from "path";
 program
   .requiredOption("-i, --input <file>", "input Excel file (XLSX or XLS)")
   .option("-o, --output <file>", "output CSV file", "output.csv")
-  .option("-s, --sheet <name>", "name of the worksheet to use", "Sheet1")
+  .option("-s, --sheet <name>", "name of the worksheet to use", "Sheet 1")
   .option("--headered", "does the Excel sheet have a header row?", true);
 
 program.parse(process.argv);
 const options = program.opts();
 
-async () => {
+(async () => {
   try {
     console.log(`Reading from ${options.input}...`);
 
     const workbook = XLSX.readFile(options.input);
 
-    if (!workkbook.SheetNames.includes(options.sheet)) {
-      throw new Error(`Sheet ${options.sheet} not found in workbook.`);
+    console.log(`Available sheets: ${workbook.SheetNames.join(", ")}`);
+
+    if (!workbook.SheetNames.includes(options.sheet)) {
+      throw new Error(
+        `Sheet ${
+          options.sheet
+        } not found in workbook.Available sheets: ${workbook.SheetNames.join(
+          ", "
+        )}`
+      );
     }
 
     const worksheet = workbook.Sheets[options.sheet];
@@ -65,4 +73,4 @@ async () => {
     console.error("Error:", error.message);
     process.exit(1);
   }
-};
+})();
